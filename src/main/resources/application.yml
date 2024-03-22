@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      user: root
+      password: root
+      uri: ${MONGODB_URI:mongodb://localhost:27017/}
+      database: ${DATABASE_NAME:TurnBasedFighter}
