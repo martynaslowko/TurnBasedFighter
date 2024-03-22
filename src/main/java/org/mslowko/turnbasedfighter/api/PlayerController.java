@@ -3,10 +3,9 @@ package org.mslowko.turnbasedfighter.api;
 import lombok.RequiredArgsConstructor;
 import org.mslowko.turnbasedfighter.model.Player;
 import org.mslowko.turnbasedfighter.service.PlayerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 @RestController
 @RequestMapping("player")
@@ -15,11 +14,12 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<Player> createNewPlayer(@RequestParam("name") String name) {
-        try {
-            return ResponseEntity.ok(playerService.newPlayer(name));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error", e);
-        }
+    public ResponseEntity<Player> createNewPlayer(@RequestParam("name") String name) {
+        return ResponseEntity.ok(playerService.newPlayer(name));
+    }
+
+    @PostMapping("/{player}/characters/new")
+    public ResponseEntity<Player> addNewCharacter(@PathVariable("player") String player, @RequestBody String characterName) {
+        return ResponseEntity.ok(playerService.addCharacter(player, characterName));
     }
 }
