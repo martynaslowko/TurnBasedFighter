@@ -11,6 +11,5 @@ public abstract class Unit {
     private final String name;
     protected int currentHP;
     protected int damage;
-    protected int level;
     protected int exp;
 }

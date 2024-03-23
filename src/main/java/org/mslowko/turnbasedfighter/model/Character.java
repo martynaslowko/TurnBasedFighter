@@ -6,6 +6,7 @@ import lombok.Getter;
 public class Character extends Unit {
     private int maxHP;
     private int maxHeal;
+    private int level;
 
     public Character(String name) {
         super(name);
@@ -13,5 +14,6 @@ public class Character extends Unit {
         this.damage = 10;
         this.maxHeal = 10;
         this.maxHP = currentHP;
+        this.level = 0;
     }
 }
