@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      user: root
-      password: root
+      username: ${DB_USER:root}
+      password: ${DB_PWD:root}
+      database: ${DB_NAME:TurnBasedFighter}
       uri: ${MONGODB_URI:mongodb://localhost:27017/}
-      database: ${DATABASE_NAME:TurnBasedFighter}
