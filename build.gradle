@@ -19,7 +19,9 @@ dependencies {
     implementation 'org.springframework.data:spring-data-mongodb:4.2.4'
     implementation 'org.mongodb:mongodb-driver-sync:5.0.0'
 
+    implementation 'org.modelmapper.extensions:modelmapper-spring:3.2.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor('org.projectlombok:lombok:1.18.32')

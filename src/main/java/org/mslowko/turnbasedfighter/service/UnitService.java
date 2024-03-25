@@ -1,6 +1,6 @@
 package org.mslowko.turnbasedfighter.service;
 
-import org.mslowko.turnbasedfighter.model.Unit;
+import org.mslowko.turnbasedfighter.pojo.Unit;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -10,13 +10,8 @@ public class UnitService {
     protected final Random random = new Random();
 
     public void attack(Unit source, Unit target) {
-        int maxValue = source.getDamage();
+        int maxValue = source.getDamage().getValue();
         int value = random.nextInt(0, maxValue);
-        inflictDamage(target, value);
-    }
-
-    private void inflictDamage(Unit target, int value) {
-        int subtract = target.getHp() - value;
-        target.setHp(subtract);
+        target.getHp().subtract(value);
     }
 }

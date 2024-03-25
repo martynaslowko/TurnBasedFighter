@@ -1,6 +1,7 @@
 package org.mslowko.turnbasedfighter.model;
 
 import lombok.Data;
+import org.mslowko.turnbasedfighter.pojo.Character;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 

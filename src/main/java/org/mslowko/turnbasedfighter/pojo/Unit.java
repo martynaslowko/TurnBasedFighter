@@ -1,17 +1,16 @@
-package org.mslowko.turnbasedfighter.model;
+package org.mslowko.turnbasedfighter.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
 public abstract class Unit {
     private final String name;
-    protected int hp;
-    protected int damage;
-    protected int exp;
+    protected MutableInt hp;
+    protected MutableInt damage;
+    protected MutableInt exp;
 }

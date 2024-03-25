@@ -1,4 +1,4 @@
-package org.mslowko.turnbasedfighter.model.exceptions;
+package org.mslowko.turnbasedfighter.pojo.exceptions;
 
 public class PlayerNotFoundException extends RuntimeException {
     private static final String ERR_MESSAGE = "Player %s not found.";

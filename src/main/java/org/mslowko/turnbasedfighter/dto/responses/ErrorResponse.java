@@ -1,4 +1,4 @@
-package org.mslowko.turnbasedfighter.dto;
+package org.mslowko.turnbasedfighter.dto.responses;
 
 import org.springframework.http.HttpStatus;
 

@@ -2,9 +2,11 @@ package org.mslowko.turnbasedfighter.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mslowko.turnbasedfighter.model.Character;
+import org.modelmapper.ModelMapper;
+import org.mslowko.turnbasedfighter.dto.PlayerDto;
+import org.mslowko.turnbasedfighter.pojo.Character;
 import org.mslowko.turnbasedfighter.model.Player;
-import org.mslowko.turnbasedfighter.model.exceptions.PlayerNotFoundException;
+import org.mslowko.turnbasedfighter.pojo.exceptions.PlayerNotFoundException;
 import org.mslowko.turnbasedfighter.model.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +18,19 @@ import java.util.Optional;
 public class PlayerService {
     private final PlayerRepository playerRepository;
     private final CharacterService characterService;
+    private final ModelMapper modelMapper;
 
-    public Player newPlayer(String name) {
+    public PlayerDto newPlayer(String name) {
         if (playerRepository.existsById(name))
             throw new IllegalArgumentException("Player already exists.");
 
         Player player = new Player(name);
         playerRepository.save(player);
         log.info("New player has been created: {}", player.getName());
-        return player;
+        return modelMapper.map(player, PlayerDto.class);
     }
 
-    public Player addCharacter(String playerName, String characterName) {
+    public PlayerDto addCharacter(String playerName, String characterName) {
         Optional<Player> optionalPlayer = playerRepository.findById(playerName);
         if (optionalPlayer.isEmpty())
             throw new PlayerNotFoundException(playerName);
@@ -37,6 +40,6 @@ public class PlayerService {
         player.getCharacters().add(character);
         playerRepository.save(player);
         log.info("New character ({}) has been assigned to player {}.", character.getName(), player.getName());
-        return player;
+        return modelMapper.map(player, PlayerDto.class);
     }
 }
