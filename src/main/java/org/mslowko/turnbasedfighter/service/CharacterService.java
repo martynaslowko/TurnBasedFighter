@@ -14,7 +14,7 @@ public class CharacterService extends UnitService {
     public void heal(Character character) {
         int maxValue = character.getMaxHeal();
         int minValue = maxValue - 10 + 1;
-        int value = character.getCurrentHP() + random.nextInt(minValue, maxValue);
-        character.setCurrentHP(Math.min(value, character.getMaxHP()));
+        int value = character.getHp() + random.nextInt(minValue, maxValue);
+        character.setHp(Math.min(value, character.getMaxHP()));
     }
 }

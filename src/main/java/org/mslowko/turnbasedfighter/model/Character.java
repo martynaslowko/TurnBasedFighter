@@ -9,11 +9,9 @@ public class Character extends Unit {
     private int level;
 
     public Character(String name) {
-        super(name);
-        this.currentHP = 20;
-        this.damage = 10;
+        super(name, 20, 10, 0);
         this.maxHeal = 10;
-        this.maxHP = currentHP;
+        this.maxHP = hp;
         this.level = 0;
     }
 }

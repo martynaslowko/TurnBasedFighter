@@ -1,7 +1,12 @@
+server:
+  port: 8080
+  address: ${HOST_ADDR:localhost}
+
+mob-builder:
+  port: 8081
+
 spring:
   data:
     mongodb:
-      username: ${DB_USER:root}
-      password: ${DB_PWD:root}
-      database: ${DB_NAME:TurnBasedFighter}
-      uri: ${MONGODB_URI:mongodb://localhost:27017/}
+      uri: ${MONGODB_URI:mongodb://root:root@localhost:27017/}
+      database: ${DB_NAME:MobBuilder}

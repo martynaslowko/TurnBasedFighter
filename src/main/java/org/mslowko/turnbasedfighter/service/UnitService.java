@@ -16,7 +16,7 @@ public class UnitService {
     }
 
     private void inflictDamage(Unit target, int value) {
-        int subtract = target.getCurrentHP() - value;
-        target.setCurrentHP(subtract);
+        int subtract = target.getHp() - value;
+        target.setHp(subtract);
     }
 }
