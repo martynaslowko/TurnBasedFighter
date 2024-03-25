@@ -9,7 +9,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public abstract class Unit {
-    private final String name;
+    protected String name;
     protected MutableInt hp;
     protected MutableInt damage;
     protected MutableInt exp;

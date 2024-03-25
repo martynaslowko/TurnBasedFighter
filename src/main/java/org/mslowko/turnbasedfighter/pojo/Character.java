@@ -5,9 +5,9 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 @Getter
 public class Character extends Unit {
-    private final MutableInt maxHP;
-    private final MutableInt maxHeal;
-    private final MutableInt level;
+    private MutableInt maxHP;
+    private MutableInt maxHeal;
+    private MutableInt level;
 
     public Character(String name) {
         super(name,
