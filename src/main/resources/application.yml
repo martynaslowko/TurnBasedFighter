@@ -6,7 +6,8 @@ mob-builder:
   port: 8081
 
 spring:
-  data:
-    mongodb:
-      uri: ${MONGODB_URI:mongodb://root:root@localhost:27017/}
-      database: ${DB_NAME:MobBuilder}
+  neo4j:
+    uri: ${NEO4J_URI:bolt://localhost:7687}
+    authentication:
+      password: ${DB_PWD}
+      username: ${DB_USER:neo4j}

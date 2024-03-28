@@ -1,4 +1,4 @@
-package org.mslowko.turnbasedfighter.dto;
+package org.mslowko.turnbasedfighter.pojo.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,5 @@ public class MobDto {
     private String name;
     private int hp;
     private int damage;
-    private int exp;
     private String tier;
 }

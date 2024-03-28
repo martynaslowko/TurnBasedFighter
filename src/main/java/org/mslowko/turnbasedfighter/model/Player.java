@@ -1,17 +1,20 @@
 package org.mslowko.turnbasedfighter.model;
 
 import lombok.Data;
-import org.mslowko.turnbasedfighter.pojo.Character;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("players")
+@Node("Player")
 public class Player {
-    private @MongoId String name;
+    @Id
+    private String name;
+
+    @Relationship(type = "CREATED_BY", direction = Relationship.Direction.INCOMING)
     private List<Character> characters = new ArrayList<>();
 
     public Player(String name) {

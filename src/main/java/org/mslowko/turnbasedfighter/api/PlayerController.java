@@ -1,7 +1,7 @@
 package org.mslowko.turnbasedfighter.api;
 
 import lombok.RequiredArgsConstructor;
-import org.mslowko.turnbasedfighter.dto.PlayerDto;
+import org.mslowko.turnbasedfighter.pojo.dto.PlayerDto;
 import org.mslowko.turnbasedfighter.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
