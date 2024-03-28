@@ -15,7 +15,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.2.3'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.3'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-neo4j:3.2.3'
 
     implementation 'org.modelmapper.extensions:modelmapper-spring:3.2.0'

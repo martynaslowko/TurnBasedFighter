@@ -7,9 +7,9 @@ import java.util.Random;
 
 @Service
 public class UnitService {
-    protected final Random random = new Random();
+    private final Random random = new Random();
 
-    public void attack(Unit source, Unit target) {
+    public void attack(Unit source, Unit target) { //TODO
         int maxValue = source.getDamage();
         int value = random.nextInt(0, maxValue);
         target.setHp(target.getHp() - value);
