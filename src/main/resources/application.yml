@@ -1,7 +1,13 @@
+server:
+  port: 8080
+  address: ${HOST_ADDR:localhost}
+
+mob-builder:
+  port: 8081
+
 spring:
-  data:
-    mongodb:
-      user: root
-      password: root
-      uri: ${MONGODB_URI:mongodb://localhost:27017/}
-      database: ${DATABASE_NAME:TurnBasedFighter}
+  neo4j:
+    uri: ${NEO4J_URI:bolt://localhost:7687}
+    authentication:
+      password: ${DB_PWD}
+      username: ${DB_USER:neo4j}

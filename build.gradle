@@ -1,5 +1,8 @@
 plugins {
+    id 'application'
     id 'java'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.2.21'
 }
 
 group = 'org.mslowko.turnbasedfighter'
@@ -11,9 +14,12 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.2.3'
-    implementation 'org.springframework.data:spring-data-mongodb:4.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-neo4j:3.2.3'
 
-    implementation 'org.mongodb:mongodb-driver-sync:5.0.0'
+    implementation 'org.modelmapper.extensions:modelmapper-spring:3.2.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor('org.projectlombok:lombok:1.18.32')
@@ -24,4 +30,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs << '-parameters'
 }
