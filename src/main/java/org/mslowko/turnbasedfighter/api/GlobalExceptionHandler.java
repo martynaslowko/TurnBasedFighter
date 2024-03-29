@@ -16,7 +16,9 @@ public class GlobalExceptionHandler {
         return parseError(HttpStatus.NOT_FOUND, e);
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, CharacterAlreadyDeployedException.class, DungeonAlreadyFullException.class, DungeonAlreadyStartedException.class})
+    @ExceptionHandler({IllegalArgumentException.class, CharacterAlreadyDeployedException.class,
+            DungeonAlreadyFullException.class, DungeonAlreadyStartedException.class,
+            CharacterTurnDeniedException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(RuntimeException e) {
         return parseError(HttpStatus.BAD_REQUEST, e);
     }

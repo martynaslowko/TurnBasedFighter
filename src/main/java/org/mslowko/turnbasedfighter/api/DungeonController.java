@@ -1,6 +1,7 @@
 package org.mslowko.turnbasedfighter.api;
 
 import lombok.RequiredArgsConstructor;
+import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
 import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
@@ -25,7 +26,11 @@ public class DungeonController {
     }
 
     @PostMapping("/{id}/join")
-    public ResponseEntity<DungeonDto> joinDungeon(@PathVariable String id, @RequestBody CharacterJoinRequest joinDto) {
-        return ResponseEntity.ok(dungeonService.joinDungeon(id, joinDto));
+    public ResponseEntity<DungeonDto> joinDungeon(@PathVariable String id, @RequestBody CharacterJoinRequest joinRequest) {
+        return ResponseEntity.ok(dungeonService.joinDungeon(id, joinRequest));
     }
-}
+
+    @PostMapping("/{id}/battle")
+    public ResponseEntity<DungeonDto> handleAction(@PathVariable String id, @RequestBody CharacterActionRequest actionRequest) {
+        return ResponseEntity.ok(dungeonService.handleAction(id, actionRequest));
+    }}

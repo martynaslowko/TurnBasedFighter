@@ -9,7 +9,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -23,7 +23,7 @@ public class Dungeon {
     private final int waves;
     private final int slots;
     private boolean started;
-    private final String joinKey = RandomStringUtils.random(4, true, true).toUpperCase();
+    private String joinKey = RandomStringUtils.random(4, true, true).toUpperCase();
 
     @Relationship(type = "CURRENT_TURN", direction = Relationship.Direction.OUTGOING)
     private Character currentCharacter;
@@ -32,5 +32,5 @@ public class Dungeon {
     private Mob currentOpponent;
 
     @Relationship(type = "DEPLOYED_TO", direction = Relationship.Direction.INCOMING)
-    private List<Character> lobby = new ArrayList<>();
+    private List<Character> lobby = new LinkedList<>();
 }
