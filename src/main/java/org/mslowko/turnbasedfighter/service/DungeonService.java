@@ -2,12 +2,15 @@ package org.mslowko.turnbasedfighter.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.mslowko.turnbasedfighter.engine.BattleHandler;
 import org.mslowko.turnbasedfighter.model.Character;
 import org.mslowko.turnbasedfighter.model.Dungeon;
 import org.mslowko.turnbasedfighter.model.repository.DungeonRepository;
 import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
 import org.mslowko.turnbasedfighter.pojo.exceptions.*;
+import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
+import org.mslowko.turnbasedfighter.pojo.responses.BattleResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,15 @@ public class DungeonService {
     private final DungeonRepository dungeonRepository;
     private final CharacterService characterService;
     private final ModelMapper modelMapper;
+    private final BattleHandler battleHandler;
+
+    public BattleResponse handleAction(String id, CharacterActionRequest request) {
+        Dungeon dungeon = fetchDungeon(id);
+        Character character = characterService.fetchCharacter(request.getCharacterId());
+        if (!dungeon.isStarted())
+            throw new DungeonNotStartedException(id);
+        return battleHandler.nextTurn(dungeon, character, request.getAction());
+    }
 
     public DungeonCreateResponse createDungeon(int waves, int slots) {
         Dungeon dungeon = new Dungeon(waves, slots);
@@ -34,14 +46,16 @@ public class DungeonService {
             throw new DungeonAlreadyStartedException(dungeon.getId());
 
         dungeon.setStarted(true);
+        dungeon.setCurrentCharacter(dungeon.getLobby().get(0));
+        battleHandler.nextWave(dungeon);
         dungeonRepository.save(dungeon);
         return modelMapper.map(dungeon, DungeonDto.class);
     }
 
-    public DungeonDto joinDungeon(String id, CharacterJoinRequest joinDto) {
+    public DungeonDto joinDungeon(String id, CharacterJoinRequest request) {
         Dungeon dungeon = fetchDungeon(id);
-        Character character = characterService.fetchCharacter(joinDto.getCharacterId());
-        validateJoinPrerequisites(dungeon, character, joinDto.getKey());
+        Character character = characterService.fetchCharacter(request.getCharacterId());
+        validateJoinPrerequisites(dungeon, character, request.getKey());
         dungeon.getLobby().add(character);
         dungeonRepository.save(dungeon);
         return modelMapper.map(dungeon, DungeonDto.class);
