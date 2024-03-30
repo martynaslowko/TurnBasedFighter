@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
 import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
+import org.mslowko.turnbasedfighter.pojo.responses.BattleResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
 import org.mslowko.turnbasedfighter.service.DungeonService;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,6 @@ public class DungeonController {
     }
 
     @PostMapping("/{id}/battle")
-    public ResponseEntity<DungeonDto> handleAction(@PathVariable String id, @RequestBody CharacterActionRequest actionRequest) {
+    public ResponseEntity<BattleResponse> handleAction(@PathVariable String id, @RequestBody CharacterActionRequest actionRequest) {
         return ResponseEntity.ok(dungeonService.handleAction(id, actionRequest));
     }}

@@ -13,9 +13,11 @@ public class CharacterEngine extends Character implements Engine<Character> {
                 character.getLevel(), character.getMaxHeal(), character.getMaxHP(), character.getVersion());
     }
 
-    public void heal() {
+    public int heal() {
         int minValue = this.maxHeal - 10 + 1;
-        this.hp = Math.min(random.nextInt(minValue, this.maxHeal), this.maxHP);
+        int sum = this.hp + random.nextInt(minValue, this.maxHeal);
+        this.hp = Math.min(sum, this.maxHP);
+        return this.hp;
     }
 
     @Override
@@ -23,8 +25,8 @@ public class CharacterEngine extends Character implements Engine<Character> {
         return new Character(this.hp, this.damage, this.exp, this.name, this.level, this.maxHeal, this.maxHP, this.version);
     }
 
-    public void attack(Unit target) {
-        Engine.super.attack(target, this.damage);
+    public int attack(Unit target) {
+        return Engine.super.attack(target, this.damage);
     }
 
     public boolean isAlive() {

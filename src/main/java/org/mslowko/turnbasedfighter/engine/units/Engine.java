@@ -13,8 +13,9 @@ public interface Engine<U> {
 
     U portToParent();
 
-    default void attack(Unit target, int maxValue) {
+    default int attack(Unit target, int maxValue) {
         int value = random.nextInt(0, maxValue);
         target.setHp(target.getHp() - value);
+        return value;
     }
 }

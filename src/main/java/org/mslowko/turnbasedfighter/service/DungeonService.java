@@ -10,6 +10,7 @@ import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
 import org.mslowko.turnbasedfighter.pojo.exceptions.*;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
+import org.mslowko.turnbasedfighter.pojo.responses.BattleResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,12 @@ public class DungeonService {
     private final ModelMapper modelMapper;
     private final BattleHandler battleHandler;
 
-    public DungeonDto handleAction(String id, CharacterActionRequest request) {
+    public BattleResponse handleAction(String id, CharacterActionRequest request) {
         Dungeon dungeon = fetchDungeon(id);
         Character character = characterService.fetchCharacter(request.getCharacterId());
         if (!dungeon.isStarted())
             throw new DungeonNotStartedException(id);
-        battleHandler.nextTurn(dungeon, character, request.getAction());
-        return modelMapper.map(dungeon, DungeonDto.class);
+        return battleHandler.nextTurn(dungeon, character, request.getAction());
     }
 
     public DungeonCreateResponse createDungeon(int waves, int slots) {
@@ -46,6 +46,7 @@ public class DungeonService {
             throw new DungeonAlreadyStartedException(dungeon.getId());
 
         dungeon.setStarted(true);
+        dungeon.setCurrentCharacter(dungeon.getLobby().get(0));
         battleHandler.nextWave(dungeon);
         dungeonRepository.save(dungeon);
         return modelMapper.map(dungeon, DungeonDto.class);

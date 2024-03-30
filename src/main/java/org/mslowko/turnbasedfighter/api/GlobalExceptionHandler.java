@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({PlayerNotFoundException.class, CharacterNotFoundException.class, DungeonNotFoundException.class})
-    public ResponseEntity<Object> handlePlayerNotFoundException(RuntimeException e) {
+    public ResponseEntity<Object> handleNotFoundException(RuntimeException e) {
         return parseError(HttpStatus.NOT_FOUND, e);
     }
 
@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
             CharacterTurnDeniedException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(RuntimeException e) {
         return parseError(HttpStatus.BAD_REQUEST, e);
+    }
+
+    @ExceptionHandler({InvalidJoinKeyException.class})
+    public ResponseEntity<Object> handleUnauthorizedException(RuntimeException e) {
+        return parseError(HttpStatus.UNAUTHORIZED, e);
     }
 
     private ResponseEntity<Object> parseError(HttpStatus status, RuntimeException e) {

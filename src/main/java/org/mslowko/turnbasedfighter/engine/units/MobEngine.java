@@ -14,8 +14,8 @@ public class MobEngine extends Mob implements Engine<Mob> {
         return new Mob(this.id, this.name, this.tier, this.hp, this.damage, this.exp);
     }
 
-    public void attack(Unit target) {
-        Engine.super.attack(target, this.damage);
+    public int attack(Unit target) {
+        return Engine.super.attack(target, this.damage);
     }
 
     public boolean isAlive() {
