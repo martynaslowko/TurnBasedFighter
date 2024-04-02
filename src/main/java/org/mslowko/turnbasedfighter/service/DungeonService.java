@@ -46,7 +46,7 @@ public class DungeonService {
             throw new DungeonAlreadyStartedException(dungeon.getId());
 
         dungeon.setStarted(true);
-        dungeon.setCurrentCharacter(dungeon.getLobby().get(0));
+        battleHandler.handleCurrentCharacter(dungeon);
         battleHandler.nextWave(dungeon);
         dungeonRepository.save(dungeon);
         return modelMapper.map(dungeon, DungeonDto.class);
