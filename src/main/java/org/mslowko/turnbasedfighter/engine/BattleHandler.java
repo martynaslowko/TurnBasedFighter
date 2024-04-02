@@ -19,7 +19,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.mslowko.turnbasedfighter.util.ResponseHelper.*;
+import static org.mslowko.turnbasedfighter.util.ResponseHelper.attackMessage;
+import static org.mslowko.turnbasedfighter.util.ResponseHelper.healMessage;
 
 @Slf4j
 @Component
@@ -30,6 +31,7 @@ public class BattleHandler {
     private final MobRepository mobRepository;
     private final CharacterRepository characterRepository;
     private final ResponseHelper responseHelper;
+    private final QueueCache queueCache;
 
     public BattleResponse nextTurn(Dungeon dungeon, Character caller, Action action) {
         CharacterEngine character = new CharacterEngine(caller);
@@ -97,6 +99,7 @@ public class BattleHandler {
     }
 
     private BattleResponse handleDefeat(Dungeon dungeon, String characterAction, String mobAction) {
+        queueCache.cleanUpQueue(dungeon);
         mobRepository.delete(dungeon.getCurrentOpponent());
         dungeonRepository.delete(dungeon);
         characterRepository.deleteAll(dungeon.getLobby());
@@ -132,18 +135,13 @@ public class BattleHandler {
         lobby.forEach(c -> c.setHp(c.getMaxHP()));
     }
 
-    private void handleCurrentCharacter(Dungeon dungeon) {
-        List<Character> lobby = dungeon.getLobby();
-        Character character;
-        do {
-            character = dungeon.getCurrentCharacter();
-            try {
-                int prevIndex = lobby.indexOf(character);
-                character = lobby.get(prevIndex + 1);
-            } catch (IndexOutOfBoundsException | NullPointerException e) {
-                character = lobby.get(0);
+    public void handleCurrentCharacter(Dungeon dungeon) {
+        while (true) {
+            Character character = queueCache.fetchCharacterFromQueueCache(dungeon);
+            if (character.getHp() > 0) {
+                dungeon.setCurrentCharacter(character);
+                break;
             }
-            dungeon.setCurrentCharacter(character);
-        } while (character.getHp() <= 0);
+        }
     }
 }
