@@ -17,6 +17,7 @@ import org.mslowko.turnbasedfighter.service.MobService;
 import org.mslowko.turnbasedfighter.util.ResponseHelper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mslowko.turnbasedfighter.util.ResponseHelper.attackMessage;
@@ -85,6 +86,9 @@ public class BattleHandler {
     }
 
     private void handleNextWave(Dungeon dungeon, CharacterEngine character) {
+        character.gainExp(dungeon.getCurrentOpponent().getExp());
+        character.levelUp();
+        distributeExp(dungeon);
         nextWave(dungeon);
         MobEngine mob = new MobEngine(dungeon.getCurrentOpponent());
         updateDungeonTree(dungeon, character, mob);
@@ -92,6 +96,7 @@ public class BattleHandler {
 
 
     private BattleResponse handleVictory(Dungeon dungeon, String characterAction, String mobAction) {
+        distributeExp(dungeon);
         reviveAllCharacters(dungeon);
         characterRepository.saveAll(dungeon.getLobby());
         dungeonRepository.delete(dungeon);
@@ -119,6 +124,17 @@ public class BattleHandler {
             case HEAL -> character.heal();
             case ATTACK -> character.attack(mob);
         };
+    }
+
+    private void distributeExp(Dungeon dungeon) {
+        int exp = dungeon.getCurrentOpponent().getExp();
+        List<CharacterEngine> characterEngines = dungeon.getLobby().stream().map(CharacterEngine::new).toList();
+        characterEngines.forEach(c -> {
+            c.gainExp(exp);
+            c.levelUp();
+        });
+        List<Character> lobby = characterEngines.stream().map(CharacterEngine::portToParent).toList();
+        dungeon.setLobby(new ArrayList<>(lobby));
     }
 
     private void updateDungeonTree(Dungeon dungeon, CharacterEngine characterEngine, MobEngine mobEngine) {

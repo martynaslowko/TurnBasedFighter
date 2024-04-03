@@ -20,6 +20,23 @@ public class CharacterEngine extends Character implements Engine<Character> {
         return this.hp;
     }
 
+    public void gainExp(int exp) {
+        this.exp += exp;
+    }
+
+    public void levelUp() {
+        int currentExp = this.exp;
+        if (currentExp < 100)
+            return;
+        int leftoverExp = currentExp % 100;
+        int fullLevel = currentExp / 100;
+        this.level += fullLevel;
+        this.exp = leftoverExp;
+        this.maxHP += 3;
+        this.maxHeal += 2;
+        this.damage += 2;
+    }
+
     @Override
     public Character portToParent() {
         return new Character(this.hp, this.damage, this.exp, this.name, this.level, this.maxHeal, this.maxHP, this.version);
