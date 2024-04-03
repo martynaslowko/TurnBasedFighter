@@ -3,9 +3,11 @@ package org.mslowko.turnbasedfighter.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.mslowko.turnbasedfighter.pojo.dto.CharacterDto;
 import org.mslowko.turnbasedfighter.pojo.dto.PlayerDto;
 import org.mslowko.turnbasedfighter.model.Character;
 import org.mslowko.turnbasedfighter.model.Player;
+import org.mslowko.turnbasedfighter.pojo.exceptions.CharacterNotFoundException;
 import org.mslowko.turnbasedfighter.pojo.exceptions.PlayerNotFoundException;
 import org.mslowko.turnbasedfighter.model.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -41,5 +43,20 @@ public class PlayerService {
         playerRepository.save(player);
         log.info("New character ({}) has been assigned to player {}.", character.getName(), player.getName());
         return modelMapper.map(player, PlayerDto.class);
+    }
+
+    public CharacterDto fetchPlayerCharacter(String playerName, String characterName) {
+        Player player = fetchPlayer(playerName);
+        Character character = characterService.fetchCharacter(characterName);
+        if (!player.getCharacters().contains(character))
+            throw new CharacterNotFoundException(characterName);
+        return modelMapper.map(character, CharacterDto.class);
+    }
+
+    private Player fetchPlayer(String playerName) {
+        Optional<Player> optionalPlayer = playerRepository.findById(playerName);
+        if (optionalPlayer.isEmpty())
+            throw new PlayerNotFoundException(playerName);
+        return optionalPlayer.get();
     }
 }

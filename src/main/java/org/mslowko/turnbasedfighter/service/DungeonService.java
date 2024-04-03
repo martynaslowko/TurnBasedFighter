@@ -12,6 +12,7 @@ import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
 import org.mslowko.turnbasedfighter.pojo.responses.BattleResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
+import org.mslowko.turnbasedfighter.pojo.responses.DungeonLeaveResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -59,6 +60,19 @@ public class DungeonService {
         dungeon.getLobby().add(character);
         dungeonRepository.save(dungeon);
         return modelMapper.map(dungeon, DungeonDto.class);
+    }
+
+    public DungeonLeaveResponse leaveDungeon(String id, String characterName) {
+        Dungeon dungeon = fetchDungeon(id);
+        Optional<Character> optionalCharacter = dungeon.getLobby().stream().filter(c -> c.getName().equals(characterName)).findAny();
+        if (optionalCharacter.isEmpty())
+            throw new CharacterNotFoundException(characterName);
+        if (dungeon.isStarted())
+            throw new DungeonAlreadyStartedException(id);
+        Character character = optionalCharacter.get();
+        dungeon.getLobby().remove(character);
+        dungeonRepository.save(dungeon);
+        return new DungeonLeaveResponse(id);
     }
 
     private void validateJoinPrerequisites(Dungeon dungeon, Character character, String key) {

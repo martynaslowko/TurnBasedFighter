@@ -1,7 +1,9 @@
 package org.mslowko.turnbasedfighter.api;
 
 import lombok.RequiredArgsConstructor;
+import org.mslowko.turnbasedfighter.pojo.dto.CharacterDto;
 import org.mslowko.turnbasedfighter.pojo.dto.PlayerDto;
+import org.mslowko.turnbasedfighter.pojo.requests.NameRequest;
 import org.mslowko.turnbasedfighter.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,12 @@ public class PlayerController {
     }
 
     @PostMapping("/{player}/characters/new")
-    public ResponseEntity<PlayerDto> addNewCharacter(@PathVariable("player") String player, @RequestBody String characterName) {
-        return ResponseEntity.ok(playerService.addCharacter(player, characterName));
+    public ResponseEntity<PlayerDto> addNewCharacter(@PathVariable("player") String player, @RequestBody NameRequest request) {
+        return ResponseEntity.ok(playerService.addCharacter(player, request.getName()));
+    }
+
+    @GetMapping("/{player}/characters/{character}")
+    public ResponseEntity<CharacterDto> fetchPlayerCharacter(@PathVariable("player") String player, @PathVariable("character") String characterName) {
+        return ResponseEntity.ok(playerService.fetchPlayerCharacter(player,characterName));
     }
 }
