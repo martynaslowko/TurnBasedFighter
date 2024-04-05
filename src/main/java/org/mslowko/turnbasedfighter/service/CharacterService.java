@@ -14,6 +14,8 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     public Character newCharacter(String name) {
+        if (characterRepository.existsById(name))
+            throw new IllegalArgumentException("Character already exists.");
         return new Character(name);
     }
 

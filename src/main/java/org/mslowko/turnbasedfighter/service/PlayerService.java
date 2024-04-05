@@ -33,12 +33,8 @@ public class PlayerService {
     }
 
     public PlayerDto addCharacter(String playerName, String characterName) {
-        Optional<Player> optionalPlayer = playerRepository.findById(playerName);
-        if (optionalPlayer.isEmpty())
-            throw new PlayerNotFoundException(playerName);
-
+        Player player = fetchPlayer(playerName);
         Character character = characterService.newCharacter(characterName);
-        Player player = optionalPlayer.get();
         player.getCharacters().add(character);
         playerRepository.save(player);
         log.info("New character ({}) has been assigned to player {}.", character.getName(), player.getName());
