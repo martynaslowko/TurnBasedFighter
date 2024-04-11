@@ -14,7 +14,8 @@ allprojects {
             classDirectories.setFrom(files(classDirectories.files.collect{
                 fileTree(dir: it, exclude: [
                         "org/mslowko/turnbasedfighter/pojo",
-                        "org/mslowko/turnbasedfighter/model"
+                        "org/mslowko/turnbasedfighter/model",
+                        "org/mslowko/turnbasedfighter/Main.*"
                 ])
             }))
         }
