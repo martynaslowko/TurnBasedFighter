@@ -25,4 +25,11 @@ public class TestData {
         dungeon.setLobby(new ArrayList<>(characters));
         return dungeon;
     }
+
+    public static Dungeon prepareSingleDungeon() {
+        Dungeon dungeon = new Dungeon(1, 1);
+        Character character = prepareExistingPlayerCharacter("p1", "c1").getCharacters().get(0);
+        dungeon.setLobby(List.of(character));
+        return dungeon;
+    }
 }
