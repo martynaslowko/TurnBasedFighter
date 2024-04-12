@@ -7,6 +7,7 @@ import org.mslowko.turnbasedfighter.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class TestData {
     public static Player prepareExistingPlayerCharacter(String playerName, String characterName) {
@@ -31,5 +32,15 @@ public class TestData {
         Character character = prepareExistingPlayerCharacter("p1", "c1").getCharacters().get(0);
         dungeon.setLobby(List.of(character));
         return dungeon;
+    }
+
+    public static List<Character> prepareCharacterList(int length) {
+        List<String> characterNames = IntStream.rangeClosed(1, length).mapToObj(i -> "c" + i).toList();
+        return characterNames.stream().map(s -> {
+            Character character = new Character();
+            character.setName(s);
+            character.setLevel(1);
+            return character;
+        }).toList();
     }
 }
