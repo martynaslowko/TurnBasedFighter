@@ -2,6 +2,7 @@ package org.mslowko.turnbasedfighter;
 
 import org.mslowko.turnbasedfighter.model.Character;
 import org.mslowko.turnbasedfighter.model.Dungeon;
+import org.mslowko.turnbasedfighter.model.Mob;
 import org.mslowko.turnbasedfighter.model.Player;
 
 import java.util.ArrayList;
@@ -42,5 +43,13 @@ public class TestData {
             character.setLevel(1);
             return character;
         }).toList();
+    }
+
+    public static Mob prepareMob() {
+        return new Mob("Mob", "S", 10, 10, 10);
+    }
+
+    public static Character prepareCharacter() {
+        return new Character("Character");
     }
 }
