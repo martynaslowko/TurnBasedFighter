@@ -98,6 +98,7 @@ public class BattleHandler {
     private BattleResponse handleVictory(Dungeon dungeon, String characterAction, String mobAction) {
         distributeExp(dungeon);
         reviveAllCharacters(dungeon);
+        queueCache.cleanUpQueue(dungeon);
         characterRepository.saveAll(dungeon.getLobby());
         dungeonRepository.delete(dungeon);
         return responseHelper.battleResponse(Constants.BattleCode.VICTORY, dungeon, characterAction, mobAction);

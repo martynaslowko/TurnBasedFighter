@@ -2,14 +2,17 @@ package org.mslowko.turnbasedfighter;
 
 import org.mslowko.turnbasedfighter.model.Character;
 import org.mslowko.turnbasedfighter.model.Dungeon;
+import org.mslowko.turnbasedfighter.model.Mob;
 import org.mslowko.turnbasedfighter.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class TestData {
+
     public static Player prepareExistingPlayerCharacter(String playerName, String characterName) {
         Player player = new Player(playerName);
         Character character = new Character(characterName);
@@ -36,11 +39,21 @@ public class TestData {
 
     public static List<Character> prepareCharacterList(int length) {
         List<String> characterNames = IntStream.rangeClosed(1, length).mapToObj(i -> "c" + i).toList();
-        return characterNames.stream().map(s -> {
-            Character character = new Character();
-            character.setName(s);
+        return new ArrayList<>(characterNames.stream().map(s -> {
+            Character character = new Character(s);
             character.setLevel(1);
             return character;
-        }).toList();
+        }).toList());
+    }
+
+    public static Dungeon prepareDungeon(int waves, int slots) {
+        Dungeon dungeon = new Dungeon(waves, slots);
+        dungeon.setId(String.valueOf(new UUID( 0 , 0 )));
+        dungeon.setLobby(prepareCharacterList(slots));
+        return dungeon;
+    }
+
+    public static Mob prepareImp() {
+        return new Mob(new UUID( 0, 0).toString(),"Imp", "B", 20, 10, 10);
     }
 }
