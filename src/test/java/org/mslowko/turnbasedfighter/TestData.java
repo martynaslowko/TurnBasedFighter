@@ -56,4 +56,12 @@ public class TestData {
     public static Mob prepareImp() {
         return new Mob(new UUID( 0, 0).toString(),"Imp", "B", 20, 10, 10);
     }
+
+    public static Mob prepareMob() {
+        return new Mob("Mob", "S", 10, 10, 10);
+    }
+
+    public static Character prepareCharacter() {
+        return new Character("Character");
+    }
 }

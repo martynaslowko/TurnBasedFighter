@@ -15,6 +15,7 @@ allprojects {
                 fileTree(dir: it, exclude: [
                         "org/mslowko/turnbasedfighter/pojo",
                         "org/mslowko/turnbasedfighter/model",
+                        "org/mslowko/turnbasedfighter/config",
                         "org/mslowko/turnbasedfighter/Main.*"
                 ])
             }))

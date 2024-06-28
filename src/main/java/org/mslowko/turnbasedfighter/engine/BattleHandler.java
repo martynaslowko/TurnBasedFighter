@@ -154,7 +154,7 @@ public class BattleHandler {
 
     public void handleCurrentCharacter(Dungeon dungeon) {
         while (true) {
-            Character character = queueCache.fetchCharacterFromQueueCache(dungeon);
+            Character character = queueCache.getNextCharacter(dungeon);
             if (character.getHp() > 0) {
                 dungeon.setCurrentCharacter(character);
                 break;
