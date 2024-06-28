@@ -98,6 +98,7 @@ public class BattleHandler {
     private BattleResponse handleVictory(Dungeon dungeon, String characterAction, String mobAction) {
         distributeExp(dungeon);
         reviveAllCharacters(dungeon);
+        queueCache.cleanUpQueue(dungeon);
         characterRepository.saveAll(dungeon.getLobby());
         dungeonRepository.delete(dungeon);
         return responseHelper.battleResponse(Constants.BattleCode.VICTORY, dungeon, characterAction, mobAction);
@@ -153,7 +154,7 @@ public class BattleHandler {
 
     public void handleCurrentCharacter(Dungeon dungeon) {
         while (true) {
-            Character character = queueCache.fetchCharacterFromQueueCache(dungeon);
+            Character character = queueCache.getNextCharacter(dungeon);
             if (character.getHp() > 0) {
                 dungeon.setCurrentCharacter(character);
                 break;

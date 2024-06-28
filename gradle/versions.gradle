@@ -1,0 +1,4 @@
+ext {
+    project.ext.springBootVersion = "3.2.3"
+    project.ext.testcontainersVersion = "1.19.7"
+}

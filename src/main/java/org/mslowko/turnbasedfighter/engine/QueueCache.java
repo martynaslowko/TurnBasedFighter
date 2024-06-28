@@ -12,7 +12,7 @@ import java.util.*;
 public class QueueCache {
     private final Map<String, Deque<String>> queueMap = new HashMap<>();
 
-    public Character fetchCharacterFromQueueCache(Dungeon dungeon) {
+    public Character getNextCharacter(Dungeon dungeon) {
         Deque<String> queue = queueMap.get(dungeon.getId());
         try {
             String name = queue.getFirst();
@@ -25,7 +25,7 @@ public class QueueCache {
                 return character.get();
         } catch (NullPointerException e) {
             initializeQueue(dungeon);
-            return fetchCharacterFromQueueCache(dungeon);
+            return getNextCharacter(dungeon);
         }
         throw new IllegalStateException(); //Shouldn't happen
     }

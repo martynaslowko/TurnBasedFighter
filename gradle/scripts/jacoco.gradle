@@ -1,0 +1,24 @@
+
+allprojects {
+    apply plugin: "jacoco"
+
+    jacoco {
+        toolVersion = "0.8.11"
+        reportsDirectory = layout.buildDirectory.dir('reports/jacoco')
+    }
+
+    jacocoTestReport {
+        dependsOn test
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect{
+                fileTree(dir: it, exclude: [
+                        "org/mslowko/turnbasedfighter/pojo",
+                        "org/mslowko/turnbasedfighter/model",
+                        "org/mslowko/turnbasedfighter/config",
+                        "org/mslowko/turnbasedfighter/Main.*"
+                ])
+            }))
+        }
+    }
+}
