@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class NameRequest {
+public class PlayerCreateRequest {
     private String name;
+    private String password;
 }

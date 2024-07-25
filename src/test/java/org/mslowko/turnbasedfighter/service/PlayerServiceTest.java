@@ -68,7 +68,8 @@ class PlayerServiceTest {
     @Test
     void newPlayerTest() {
         String playerName = "player";
-        playerService.newPlayer(playerName);
+        String playerPassword = "pwd";
+        playerService.newPlayer(playerName, playerPassword);
         boolean result = playerRepository.existsById(playerName);
         assertThat(result).isTrue();
     }
@@ -76,9 +77,10 @@ class PlayerServiceTest {
     @Test
     void newPlayerExceptionTest() {
         String playerName = "player";
-        playerService.newPlayer(playerName);
+        String playerPassword = "pwd";
+        playerService.newPlayer(playerName, playerPassword);
         assertThrows(IllegalArgumentException.class,
-                () -> playerService.newPlayer(playerName));
+                () -> playerService.newPlayer(playerName, playerPassword));
     }
 
     @Test

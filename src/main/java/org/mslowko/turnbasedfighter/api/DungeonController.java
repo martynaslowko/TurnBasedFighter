@@ -1,10 +1,10 @@
 package org.mslowko.turnbasedfighter.api;
 
 import lombok.RequiredArgsConstructor;
+import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterActionRequest;
 import org.mslowko.turnbasedfighter.pojo.requests.CharacterJoinRequest;
-import org.mslowko.turnbasedfighter.pojo.dto.DungeonDto;
-import org.mslowko.turnbasedfighter.pojo.requests.NameRequest;
+import org.mslowko.turnbasedfighter.pojo.requests.CharacterRequest;
 import org.mslowko.turnbasedfighter.pojo.responses.BattleResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonCreateResponse;
 import org.mslowko.turnbasedfighter.pojo.responses.DungeonLeaveResponse;
@@ -34,8 +34,8 @@ public class DungeonController {
     }
 
     @PostMapping("/{id}/leave")
-    public ResponseEntity<DungeonLeaveResponse> leaveDungeon(@PathVariable String id, @RequestBody NameRequest request) {
-        return ResponseEntity.ok(dungeonService.leaveDungeon(id, request.getName()));
+    public ResponseEntity<DungeonLeaveResponse> leaveDungeon(@PathVariable String id, @RequestBody CharacterRequest request) {
+        return ResponseEntity.ok(dungeonService.leaveDungeon(id, request.getPlayer(), request.getCharacterName()));
     }
 
 

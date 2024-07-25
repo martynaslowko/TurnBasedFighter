@@ -35,8 +35,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mslowko.turnbasedfighter.Constants.neo4jImage;
 import static org.mslowko.turnbasedfighter.TestData.*;
 import static org.mslowko.turnbasedfighter.engine.Action.ATTACK;
@@ -68,6 +67,9 @@ class DungeonServiceTest {
 
     @MockBean
     private CharacterService characterService;
+
+    @MockBean
+    private PlayerService playerService;
 
     @MockBean
     private BattleHandler battleHandler;
@@ -223,7 +225,7 @@ class DungeonServiceTest {
         String dungeonId = dungeon.getId();
 
         assertThrows(CharacterNotFoundException.class,
-                () -> dungeonService.leaveDungeon(dungeonId, "c3"));
+                () -> dungeonService.leaveDungeon(dungeonId, "p3","c3"));
     }
 
     @Test
@@ -233,9 +235,11 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
+        String removedCharacterId = "c1";
+        String playerId = "p1";
 
         assertThrows(DungeonAlreadyStartedException.class,
-                () -> dungeonService.leaveDungeon(dungeonId, "c1"));
+                () -> dungeonService.leaveDungeon(dungeonId, playerId, removedCharacterId));
     }
 
     @Test
@@ -245,8 +249,9 @@ class DungeonServiceTest {
 
         String dungeonId = dungeon.getId();
         String removedCharacterId = "c1";
+        String playerId = "p1";
 
-        dungeonService.leaveDungeon(dungeonId, removedCharacterId);
+        dungeonService.leaveDungeon(dungeonId, playerId, removedCharacterId);
 
         Dungeon updatedDungeon = dungeonRepository.findById(dungeonId).get();
 

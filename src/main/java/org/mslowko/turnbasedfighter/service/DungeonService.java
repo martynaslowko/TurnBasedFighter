@@ -23,6 +23,7 @@ import java.util.Optional;
 public class DungeonService {
     private final DungeonRepository dungeonRepository;
     private final CharacterService characterService;
+    private final PlayerService playerService;
     private final ModelMapper modelMapper;
     private final BattleHandler battleHandler;
 
@@ -62,9 +63,12 @@ public class DungeonService {
         return modelMapper.map(dungeon, DungeonDto.class);
     }
 
-    public DungeonLeaveResponse leaveDungeon(String id, String characterName) {
+    public DungeonLeaveResponse leaveDungeon(String id, String player, String characterName) {
         Dungeon dungeon = fetchDungeon(id);
-        Optional<Character> optionalCharacter = dungeon.getLobby().stream().filter(c -> c.getName().equals(characterName)).findAny();
+        playerService.fetchPlayerCharacter(player, characterName);
+        Optional<Character> optionalCharacter = dungeon.getLobby().stream()
+                .filter(c -> c.getName().equals(characterName))
+                .findAny();
         if (optionalCharacter.isEmpty())
             throw new CharacterNotFoundException(characterName);
         if (dungeon.isStarted())
