@@ -27,7 +27,8 @@ public class DungeonService {
     private final ModelMapper modelMapper;
     private final BattleHandler battleHandler;
 
-    public BattleResponse handleAction(String id, CharacterActionRequest request) {
+    public BattleResponse handleAction(String id, String playerId, CharacterActionRequest request) {
+        playerService.fetchPlayerCharacter(playerId, request.getCharacterId());
         Dungeon dungeon = fetchDungeon(id);
         Character character = characterService.fetchCharacter(request.getCharacterId());
         if (!dungeon.isStarted())
@@ -54,7 +55,8 @@ public class DungeonService {
         return modelMapper.map(dungeon, DungeonDto.class);
     }
 
-    public DungeonDto joinDungeon(String id, CharacterJoinRequest request) {
+    public DungeonDto joinDungeon(String id, String playerId, CharacterJoinRequest request) {
+        playerService.fetchPlayerCharacter(playerId, request.getCharacterId());
         Dungeon dungeon = fetchDungeon(id);
         Character character = characterService.fetchCharacter(request.getCharacterId());
         validateJoinPrerequisites(dungeon, character, request.getKey());

@@ -12,6 +12,8 @@ import org.mslowko.turnbasedfighter.service.DungeonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("dungeon")
 @RequiredArgsConstructor
@@ -29,17 +31,17 @@ public class DungeonController {
     }
 
     @PostMapping("/{id}/join")
-    public ResponseEntity<DungeonDto> joinDungeon(@PathVariable String id, @RequestBody CharacterJoinRequest joinRequest) {
-        return ResponseEntity.ok(dungeonService.joinDungeon(id, joinRequest));
+    public ResponseEntity<DungeonDto> joinDungeon(@PathVariable String id, @RequestBody CharacterJoinRequest joinRequest, Principal principal) {
+        return ResponseEntity.ok(dungeonService.joinDungeon(id, principal.getName(), joinRequest));
     }
 
     @PostMapping("/{id}/leave")
-    public ResponseEntity<DungeonLeaveResponse> leaveDungeon(@PathVariable String id, @RequestBody CharacterRequest request) {
-        return ResponseEntity.ok(dungeonService.leaveDungeon(id, request.getPlayer(), request.getCharacterName()));
+    public ResponseEntity<DungeonLeaveResponse> leaveDungeon(@PathVariable String id, @RequestBody CharacterRequest request, Principal principal) {
+        return ResponseEntity.ok(dungeonService.leaveDungeon(id, principal.getName(), request.getCharacterId()));
     }
 
 
     @PostMapping("/{id}/battle")
-    public ResponseEntity<BattleResponse> handleAction(@PathVariable String id, @RequestBody CharacterActionRequest actionRequest) {
-        return ResponseEntity.ok(dungeonService.handleAction(id, actionRequest));
+    public ResponseEntity<BattleResponse> handleAction(@PathVariable String id, @RequestBody CharacterActionRequest actionRequest, Principal principal) {
+        return ResponseEntity.ok(dungeonService.handleAction(id, principal.getName(), actionRequest));
     }}

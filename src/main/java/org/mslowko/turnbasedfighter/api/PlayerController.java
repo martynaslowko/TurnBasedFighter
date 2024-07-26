@@ -9,6 +9,8 @@ import org.mslowko.turnbasedfighter.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 
 @RestController
 @RequestMapping("player")
@@ -22,13 +24,13 @@ public class PlayerController {
     }
 
     @PostMapping("/characters/new")
-    public ResponseEntity<PlayerDto> addNewCharacter(@RequestBody CharacterRequest request) {
-        return ResponseEntity.ok(playerService.addCharacter(request.getPlayer(), request.getCharacterName()));
+    public ResponseEntity<PlayerDto> addNewCharacter(@RequestBody CharacterRequest request, Principal principal) {
+        return ResponseEntity.ok(playerService.addCharacter(principal.getName(), request.getCharacterId()));
     }
 
     @GetMapping("/profile/{player}/{character}")
     public ResponseEntity<CharacterDto> fetchPlayerCharacter(@PathVariable("player") String player, @PathVariable("character") String characterName) {
-        return ResponseEntity.ok(playerService.fetchPlayerCharacter(player,characterName));
+        return ResponseEntity.ok(playerService.fetchPlayerCharacter(player, characterName));
     }
 
     @GetMapping("/profile/{player}")

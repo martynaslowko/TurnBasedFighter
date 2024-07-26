@@ -6,6 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CharacterRequest {
-    private String player;
-    private String characterName;
+    private String characterId;
 }

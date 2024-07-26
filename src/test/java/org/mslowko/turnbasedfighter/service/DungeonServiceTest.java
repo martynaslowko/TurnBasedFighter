@@ -103,12 +103,14 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
-        Character character = prepareExistingPlayerCharacter("p3", "c3").getCharacters().get(0);
+        String playerId = "p3";
+
+        Character character = prepareExistingPlayerCharacter(playerId, "c3").getCharacters().get(0);
         CharacterJoinRequest request = assembleRequest(dungeon.getJoinKey(), character);
 
         when(characterService.fetchCharacter(any())).thenReturn(character);
 
-        dungeonService.joinDungeon(dungeonId, request);
+        dungeonService.joinDungeon(dungeonId, playerId, request);
 
         dungeon = dungeonRepository.findById(dungeonId).get();
 
@@ -129,7 +131,7 @@ class DungeonServiceTest {
         when(dungeonRepository.fetchDungeonByCharacterName(any())).thenReturn(Optional.of(dungeon));
 
         assertThrows(CharacterAlreadyDeployedException.class,
-                () -> dungeonService.joinDungeon(dungeonId, request));
+                () -> dungeonService.joinDungeon(dungeonId, "p1", request));
     }
 
     @Test
@@ -138,13 +140,15 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
-        Character character = prepareExistingPlayerCharacter("p3", "c3").getCharacters().get(0);
+        String playerId = "p3";
+
+        Character character = prepareExistingPlayerCharacter(playerId, "c3").getCharacters().get(0);
         CharacterJoinRequest request = assembleRequest("XXXXX", character);
 
         when(characterService.fetchCharacter(any())).thenReturn(character);
 
         assertThrows(InvalidJoinKeyException.class,
-                () -> dungeonService.joinDungeon(dungeonId, request));
+                () -> dungeonService.joinDungeon(dungeonId, playerId, request));
     }
 
     @Test
@@ -154,13 +158,15 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
-        Character character = prepareExistingPlayerCharacter("p3", "c3").getCharacters().get(0);
+        String playerId = "p3";
+
+        Character character = prepareExistingPlayerCharacter(playerId, "c3").getCharacters().get(0);
         CharacterJoinRequest request = assembleRequest(dungeon.getJoinKey(), character);
 
         when(characterService.fetchCharacter(any())).thenReturn(character);
 
         assertThrows(DungeonAlreadyStartedException.class,
-                () -> dungeonService.joinDungeon(dungeonId, request));
+                () -> dungeonService.joinDungeon(dungeonId, playerId, request));
     }
 
     @Test
@@ -169,15 +175,16 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
-        Character character = prepareExistingPlayerCharacter("p3", "c3").getCharacters().get(0);
+        String playerId = "p3";
+        Character character = prepareExistingPlayerCharacter(playerId, "c3").getCharacters().get(0);
         CharacterJoinRequest request = assembleRequest(dungeon.getJoinKey(), character);
 
         when(characterService.fetchCharacter(any())).thenReturn(character);
 
-        dungeonService.joinDungeon(dungeonId, request);
+        dungeonService.joinDungeon(dungeonId, playerId, request);
 
         assertThrows(DungeonAlreadyFullException.class,
-                () -> dungeonService.joinDungeon(dungeonId, request));
+                () -> dungeonService.joinDungeon(dungeonId, playerId, request));
     }
 
     @Test
@@ -212,7 +219,7 @@ class DungeonServiceTest {
 
         when(characterService.fetchCharacter(any())).thenReturn(character);
 
-        dungeonService.handleAction(dungeonId, characterActionRequest);
+        dungeonService.handleAction(dungeonId, "p1", characterActionRequest);
 
         verify(battleHandler).nextTurn(dungeon, character, action);
     }
@@ -235,11 +242,9 @@ class DungeonServiceTest {
         dungeonRepository.save(dungeon);
 
         String dungeonId = dungeon.getId();
-        String removedCharacterId = "c1";
-        String playerId = "p1";
 
         assertThrows(DungeonAlreadyStartedException.class,
-                () -> dungeonService.leaveDungeon(dungeonId, playerId, removedCharacterId));
+                () -> dungeonService.leaveDungeon(dungeonId, "p1", "c1"));
     }
 
     @Test
@@ -249,9 +254,8 @@ class DungeonServiceTest {
 
         String dungeonId = dungeon.getId();
         String removedCharacterId = "c1";
-        String playerId = "p1";
 
-        dungeonService.leaveDungeon(dungeonId, playerId, removedCharacterId);
+        dungeonService.leaveDungeon(dungeonId, "p1", removedCharacterId);
 
         Dungeon updatedDungeon = dungeonRepository.findById(dungeonId).get();
 
