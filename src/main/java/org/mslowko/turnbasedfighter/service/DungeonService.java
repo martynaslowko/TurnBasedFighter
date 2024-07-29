@@ -23,10 +23,12 @@ import java.util.Optional;
 public class DungeonService {
     private final DungeonRepository dungeonRepository;
     private final CharacterService characterService;
+    private final PlayerService playerService;
     private final ModelMapper modelMapper;
     private final BattleHandler battleHandler;
 
-    public BattleResponse handleAction(String id, CharacterActionRequest request) {
+    public BattleResponse handleAction(String id, String playerId, CharacterActionRequest request) {
+        playerService.fetchPlayerCharacter(playerId, request.getCharacterId());
         Dungeon dungeon = fetchDungeon(id);
         Character character = characterService.fetchCharacter(request.getCharacterId());
         if (!dungeon.isStarted())
@@ -53,7 +55,8 @@ public class DungeonService {
         return modelMapper.map(dungeon, DungeonDto.class);
     }
 
-    public DungeonDto joinDungeon(String id, CharacterJoinRequest request) {
+    public DungeonDto joinDungeon(String id, String playerId, CharacterJoinRequest request) {
+        playerService.fetchPlayerCharacter(playerId, request.getCharacterId());
         Dungeon dungeon = fetchDungeon(id);
         Character character = characterService.fetchCharacter(request.getCharacterId());
         validateJoinPrerequisites(dungeon, character, request.getKey());
@@ -62,9 +65,12 @@ public class DungeonService {
         return modelMapper.map(dungeon, DungeonDto.class);
     }
 
-    public DungeonLeaveResponse leaveDungeon(String id, String characterName) {
+    public DungeonLeaveResponse leaveDungeon(String id, String player, String characterName) {
         Dungeon dungeon = fetchDungeon(id);
-        Optional<Character> optionalCharacter = dungeon.getLobby().stream().filter(c -> c.getName().equals(characterName)).findAny();
+        playerService.fetchPlayerCharacter(player, characterName);
+        Optional<Character> optionalCharacter = dungeon.getLobby().stream()
+                .filter(c -> c.getName().equals(characterName))
+                .findAny();
         if (optionalCharacter.isEmpty())
             throw new CharacterNotFoundException(characterName);
         if (dungeon.isStarted())

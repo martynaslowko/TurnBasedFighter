@@ -22,14 +22,18 @@ public class PlayerService {
     private final CharacterService characterService;
     private final ModelMapper modelMapper;
 
-    public PlayerDto newPlayer(String name) {
+    public PlayerDto newPlayer(String name, String password) {
         if (playerRepository.existsById(name))
             throw new IllegalArgumentException("Player already exists.");
 
-        Player player = new Player(name);
+        Player player = new Player(name, password);
         playerRepository.save(player);
         log.info("New player has been created: {}", player.getName());
         return modelMapper.map(player, PlayerDto.class);
+    }
+
+    public PlayerDto getPlayer(String name) {
+        return modelMapper.map(fetchPlayer(name), PlayerDto.class);
     }
 
     public PlayerDto addCharacter(String playerName, String characterName) {

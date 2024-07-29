@@ -3,10 +3,13 @@ package org.mslowko.turnbasedfighter.api;
 import lombok.RequiredArgsConstructor;
 import org.mslowko.turnbasedfighter.pojo.dto.CharacterDto;
 import org.mslowko.turnbasedfighter.pojo.dto.PlayerDto;
-import org.mslowko.turnbasedfighter.pojo.requests.NameRequest;
+import org.mslowko.turnbasedfighter.pojo.requests.CharacterRequest;
+import org.mslowko.turnbasedfighter.pojo.requests.PlayerCreateRequest;
 import org.mslowko.turnbasedfighter.service.PlayerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @RestController
@@ -16,17 +19,22 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping("/new")
-    public ResponseEntity<PlayerDto> createNewPlayer(@RequestParam("name") String name) {
-        return ResponseEntity.ok(playerService.newPlayer(name));
+    public ResponseEntity<PlayerDto> createNewPlayer(@RequestBody PlayerCreateRequest playerCreateRequest) {
+        return ResponseEntity.ok(playerService.newPlayer(playerCreateRequest.getName(), playerCreateRequest.getPassword()));
     }
 
-    @PostMapping("/{player}/characters/new")
-    public ResponseEntity<PlayerDto> addNewCharacter(@PathVariable("player") String player, @RequestBody NameRequest request) {
-        return ResponseEntity.ok(playerService.addCharacter(player, request.getName()));
+    @PostMapping("/characters/new")
+    public ResponseEntity<PlayerDto> addNewCharacter(@RequestBody CharacterRequest request, Principal principal) {
+        return ResponseEntity.ok(playerService.addCharacter(principal.getName(), request.getCharacterId()));
     }
 
-    @GetMapping("/{player}/characters/{character}")
+    @GetMapping("/profile/{player}/{character}")
     public ResponseEntity<CharacterDto> fetchPlayerCharacter(@PathVariable("player") String player, @PathVariable("character") String characterName) {
-        return ResponseEntity.ok(playerService.fetchPlayerCharacter(player,characterName));
+        return ResponseEntity.ok(playerService.fetchPlayerCharacter(player, characterName));
+    }
+
+    @GetMapping("/profile/{player}")
+    public ResponseEntity<PlayerDto> fetchPlayerCharacter(@PathVariable("player") String player) {
+        return ResponseEntity.ok(playerService.getPlayer(player));
     }
 }
